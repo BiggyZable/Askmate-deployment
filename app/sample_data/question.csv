@@ -1,0 +1,15 @@
+id,submission_time,view_number,vote_number,title,message,image
+1,1493368154,29,12,How to make lists in Python?,"I am totally new to this, any hints?",
+3,1493068124,0,2,Drawing canvas with an image picked with Cordova Camera Pluginajh,"I'm getting an image from device and drawing a canvas with filters using Pixi JS. It works all well using computer to get an image. But when I'm on IOS, it throws errors such as cross origin issue, or that I'm trying to use an unknown format.
+
+This is the code I'm using to draw the image (that works on web/desktop but not cordova built ios app)",
+5,1588762893,0,0,asdf,asdf,
+6,1588763130,0,0,test for all fields,great test,
+7,1588764659,0,2,teststsertsdfgesrg,asfa,
+8,1588765357,0,2,asdf,asdf,
+9,1588765357,0,3,asdf,asdf,
+10,1588781135,0,2,####### test with question's pictures,asdf,
+11,1588840820,0,2,asdf,asdf,
+12,1588840920,0,0,asdf,asdf,
+13,1588841232,0,0,asdf,asdf,
+14,1588857257,0,0,thfhdf,dfhfhfh,static/uploads/questions_images/14.jpeg

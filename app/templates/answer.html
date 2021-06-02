@@ -1,0 +1,171 @@
+{% extends "layout.html" %}
+{% block title %}Answer{% endblock %}
+{% block head %}
+{% endblock %}
+{% block navbar %}
+    <li class="nav-item">
+        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/tags">List Tags</a>
+    </li>
+    {% if 'username' in session %}
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('users') }}">User List</a>
+    </li>
+    {% endif %}
+{% endblock %}
+{% block content %}
+    <h2>{{ question['message'] }}</h2>
+    <br>
+    {% if 'username' in session %}
+    <form action="/question/{{ idnum }}/edit" method="GET">
+        <button class="btn btn-outline-info">EDIT QUESTION</button>
+    </form>
+    {% endif %}
+    <br>
+    <h3>Comments</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Submisson Time</th>
+            <th>Comment</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in question_comment_list %}
+            <tr>
+                <td>{{ row.submission_time }}</td>
+                <td>{{ row.message }}</td>
+                <td>Edited {{ row.edited_number }} times.</td>
+                {% if 'username' in session %}
+                    <td>
+                        <form action="/comment/{{ row.id }}/edit" method="GET">
+                            <button class="btn btn-outline-info">Edit comment</button>
+                        </form>
+                    </td>
+                {% endif %}
+                <td>
+                    <a href="/comments/{{ row.id }}/delete" onclick="return confirm('Are you sure you want to delete this comment?')">
+                        <img src="https://cdn4.iconfinder.com/data/icons/ecology-and-environment-glyph/50/Environment_Glyph-09-512.png" height="25" width="20">
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% if 'username' in session %}
+        <form action="/question/{{ question['id'] }}/new-comment" method="GET">
+            <button class="btn btn-outline-success">ADD COMMENT</button>
+        </form>
+    {% endif %}
+    <br>
+
+    <h3>Solutions</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Submission Time</th>
+            <th>Vote Number</th>
+            <th>Message</th>
+            <th>Image</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in answer_list %}
+        {% if row['accepted'] == true %}
+        <tr style="background-color: gold">
+        {% else %}
+        <tr>
+        {% endif %}
+            <td>{{ row['id'] }}</td>
+            <td>{{ row['submission_time'] }}</td>
+            <td>{{ row['vote_number'] }} <a href="/question/{{ row['question_id'] }}/{{ row['id'] }}/vote_up">&#x25B2;</a>  <a href="/question/{{ row['question_id'] }}/{{ row['id'] }}/vote_down">&#x25BC;</a></td>
+            <td>{{ row['message']|safe }}</td>
+            <td>
+                {% if row['image'] == 'None' or row['image'] == None %}
+                {% else %}
+                    <img src="/{{ row['image'] }}" alt="{{ row['image']|safe }}">
+                {% endif %}
+            </td>
+            {% if 'username' in session %}
+                <td>
+                    <form action="/answer/{{ row['id'] }}/edit">
+                        <button class="btn btn-outline-info">EDIT ANSWER</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="/answer/{{ row['id'] }}/delete/{{ idnum }}">
+                        <button class="btn btn-outline-danger">DELETE ANSWER</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="/answer/{{ row['id'] }}/new-comment">
+                        <button class="btn btn-outline-success">ADD COMMENT</button>
+                    </form>
+                </td>
+                {% if session['user_id'] == question.user_id %}
+                    {% if row['accepted'] == true %}
+                        <td>
+                            <form method="get" action="/answer/{{ row['id'] }}/unaccept">
+                            <button type="submit" class="btn btn-outline-dark">UNACCEPT</button>
+                            </form>
+                        </td>
+                            {% else %}
+                        <td>
+                            <form method="get" action="/answer/{{ row['id'] }}/accept">
+                            <button type="submit" class="btn btn-outline-dark">ACCEPT</button>
+                            </form>
+                        </td>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        </tr>
+        <tr>
+            <td>Comments</td>
+            <td colspan="4">
+                <table>
+                    <tr>
+                        <th>Submission Time</th>
+                        <th>Message</th>
+                    </tr>
+                    {% for row2 in lst %}
+                        {% if row2['answer_id'] == row['id'] %}
+                        <tr>
+                            <td>{{ row2.submission_time }}</td>
+                            <td>{{ row2.message }}</td>
+                            <td>Edited {{ row2.edited_number }} times.</td>
+                            {% if 'username' in session %}
+                            <td>
+                                <form action="/comment/{{ row2.id }}/edit" method="GET">
+                                    <button class="btn btn-outline-info">Edit comment</button>
+                                </form>
+                            </td>
+                            <td>
+                                <a href="/comments/{{ row2.id }}/delete" onclick="return confirm('Are you sure you want to delete this comment?')">
+                                <img src="https://cdn4.iconfinder.com/data/icons/ecology-and-environment-glyph/50/Environment_Glyph-09-512.png" height="25" width="20">
+                                </a>
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    {% if 'username' in session %}
+    <form action="/question/{{ question['id'] }}/new-answer" method="GET">
+        <button class="btn btn-outline-success">ADD NEW ANSWER</button>
+    </form><br>
+    <form action="/question/{{ question['id'] }}/delete" method="post">
+        <button class="btn btn-outline-danger">DELETE QUESTION</button>
+    </form>
+    {% endif %}
+    <br>
+    <a href="/"><strong>Back to main</strong></a>
+{% endblock %}

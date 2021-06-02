@@ -1,0 +1,126 @@
+{% extends "layout.html" %}
+{% block title %}User Profile{% endblock %}
+{% block head %}
+{% endblock %}
+{% block navbar %}
+    <li class="nav-item">
+        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/tags">List Tags</a>
+    </li>
+    {% if 'username' in session %}
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('users') }}">User List</a>
+    </li>
+    {% endif %}
+{% endblock %}
+{% block content %}
+        <h1>User: {{ user_dict.username }}</h1>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Registration Date</th>
+            <th>Count of Asked Questions</th>
+            <th>Count of Answers</th>
+            <th>Count of Comments</th>
+            <th>Reputation</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ user_dict.id }}</td>
+            <td>{{ user_dict.username }}</td>
+            <td>{{ user_dict.reg_time }}</td>
+            <td>{{ user_dict.question_count }}</td>
+            <td>{{ user_dict.answer_count }}</td>
+            <td>{{ user_dict.comment_count }}</td>
+            <td>{{ user_dict.reputation }}</td>
+        </tr>
+        </tbody>
+    </table><br><br>
+    <h3>Questions by User</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Submission Time</th>
+            <th>Title</th>
+            <th>View Number</th>
+            <th>Vote Number</th>
+            <th>Message</th>
+            <th>Image</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for question in user_questions %}
+            <tr>
+                <td>{{ question.id }}</td>
+                <td>{{ question.submission_time }}</td>
+                <td><a href="/question/{{ question.id }}">{{ question.title }}</a></td>
+                <td>{{ question.view_number }}</td>
+                <td>{{ question.vote_number }}</td>
+                <td>{{ question.message }}</td>
+                <td>
+                {% if question.image == 'None' or question.image == None %}
+                {% else %}
+                    <img src="/{{ question.image }}" alt="{{ question.image|safe }}">
+                {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+     <h3>Answers by User</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Submission Time</th>
+            <th>Vote Number</th>
+            <th>Message</th>
+            <th>Image</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for answer in user_answers %}
+            <tr>
+                <td><a href="/question/{{ answer.question_id }}">{{ answer.id }}</a></td>
+                <td>{{ answer.submission_time }}</td>
+                <td>{{ answer.vote_number }}</td>
+                <td>{{ answer.message }}</td>
+                <td>
+                {% if answer.image == 'None' or answer.image == None %}
+                {% else %}
+                    <img src="/{{ answer.image }}" alt="{{ answer.image|safe }}">
+                {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Comments by User</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Submission Time</th>
+            <th>Message</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for comment in user_comments %}
+            <tr>
+                <td><a href="/question/{{ comment.question_id }}">{{ comment.id }}</a></td>
+                <td>{{ comment.submission_time }}</td>
+                <td>{{ comment.message }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %}Edit Answer{% endblock %}
+{% block head %}
+{% endblock %}
+{% block content %}
+    <h1>{{ question['title'] }}</h1>
+    <p>{{ question['message'] }}</p>
+    <form action="/answer/{{ answer_id }}/edit" method="post" enctype="multipart/form-data">
+        <label for="edit-answer">Edit answer</label><br>
+        <textarea name="answer" id="edit-answer" rows="10" cols="40">{{ answer.message }}</textarea><br>
+        <label>Select image</label>
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" name="image" id="image">
+            <label class="custom-file-label" for="image">Select image...</label>
+        </div>
+        <button type="submit" class="btn btn-outline-info">Edit answer</button>
+    </form>
+    <br>
+    <a href="/question/{{ question.id }}"><strong>Back to the question</strong></a>
+    <br>
+    <a href="/"><strong>Back to main</strong></a>
+{% endblock %}

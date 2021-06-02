@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block title %}Add Comment{% endblock %}
+{% block head %}
+{% endblock %}
+{% block content %}
+    <h1>Add Comment</h1>
+    {% if type == 'question' %}
+    <form action="/question/{{ question_id }}/new-comment" method="POST">
+        <label for="comment-input">Add Comment</label><br>
+        <textarea name="comment" id="comment-input" type="text" rows="5" cols="50"></textarea><br>
+        <button type="submit" class="btn btn-outline-success">SUBMIT</button>
+    </form>
+    {% else %}
+    <form action="/answer/{{ answer_id }}/new-comment" method="POST">
+        <label for="comment-input">Add Comment</label><br>
+        <textarea name="comment" id="comment-input" type="text" rows="5" cols="50"></textarea><br>
+        <button type="submit" class="btn btn-outline-success">SUBMIT</button>
+    </form>
+    {% endif %}
+{% endblock %}

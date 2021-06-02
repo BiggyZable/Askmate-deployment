@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block title %}Tags{% endblock %}
+{% block head %}{% endblock %}
+{% block navbar %}
+    <li class="nav-item">
+        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="/tags">List Tags</a>
+    </li>
+    {% if 'username' in session %}
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('users') }}">User List</a>
+    </li>
+    {% endif %}
+{% endblock %}
+{% block content %}
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Tag name</th>
+        <th>Mentions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in tags %}
+    <tr>
+        <td>{{ row['tag_name'] }}</td>
+        <td>{{ row['tag_count'] }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+    <br><a href="/"><strong>Back to main</strong></a>
+{% endblock %}

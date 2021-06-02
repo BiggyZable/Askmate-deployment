@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block title %}Add Question{% endblock %}
+{% block head %}
+{% endblock %}
+{% block content %}
+    <h2>{{ "Edit question" if question_data['id'] != '' else "Add question" }}</h2>
+    <form action="/handle_question" method="POST" enctype="multipart/form-data">
+        {% for question_field in ['title','message'] %}
+            <label for={{ question_field }}>{{ question_field }}:</label>
+            <br>
+            <textarea type="text" rows="5" cols="50" name={{ question_field }} id={{ question_field }} required value={{ question_data[question_field] }}
+            >{{ question_data[question_field] }}</textarea>
+            <br><br>
+        {% endfor %}
+
+        <label>Select image</label>
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" name="image" id="image">
+            <label class="custom-file-label" for="image">Select image...</label>
+        </div>
+
+        <input type="hidden" type="text" name="id" id="id" value={{ question_data['id'] }}>
+        <input type="hidden" type="text" name="submission_time" id="submission_time" value={{ question_data['submission_time'] }}>
+        <input type="hidden" type="text" name="view_number" id="view_number" value={{ question_data['view_number'] }}>
+        <input type="hidden" type="text" name="vote_number" id="vote_number" value={{ question_data['vote_number'] }}>
+        <br><br>
+        <button type="submit" class="btn btn-outline-success">{{ "Edit the question" if question_data['id'] != '' else "Submit a new question" }}</button>
+    </form>
+    <br>
+    <a href="/"><strong>Back to main</strong></a>
+{% endblock %}

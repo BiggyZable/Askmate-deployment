@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block title %}Edit Comment{% endblock %}
+{% block head %}
+{% endblock %}
+{% block content %}
+    <h1>Edit comment</h1>
+    <form action="/comment/{{ comment_id }}/edit" method="POST">
+        <label for="comment-input">Edit Comment</label><br>
+        <textarea name="comment" id="comment-input" type="text" rows="5" cols="50" >{{ comment_text }}</textarea><br>
+        <button type="submit" class="btn btn-outline-success">SUBMIT</button>
+    </form>
+{% endblock %}

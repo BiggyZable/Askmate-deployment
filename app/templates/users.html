@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block title %}Users{% endblock %}
+{% block head %}
+{% endblock %}
+{% block navbar %}
+    <li class="nav-item">
+        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/tags">List Tags</a>
+    </li>
+    {% if 'username' in session %}
+    <li class="nav-item">
+        <a class="nav-link active" href="{{ url_for('users') }}">User List</a>
+    </li>
+    {% endif %}
+{% endblock %}
+{% block content %}
+    <h1>List Users</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Registration Date</th>
+            <th>Count of Asked Questions</th>
+            <th>Count of Answers</th>
+            <th>Count of Comments</th>
+            <th>Reputation</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in user_list %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td><a href="/user/{{ user.id }}">{{ user.username }}</a></td>
+                <td>{{ user.reg_time }}</td>
+                <td>{{ user.question_count }}</td>
+                <td>{{ user.answer_count }}</td>
+                <td>{{ user.comment_count }}</td>
+                <td>{{ user.reputation }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table><br>
+    <a href="/">Back to main</a>
+{% endblock %}

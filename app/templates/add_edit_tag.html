@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block title %}Edit Tag{% endblock %}
+{% block head %}
+{% endblock %}
+{% block content %}
+    <h2>{{ "Edit tag" if tag_data['id'] != '' else "Add tag" }}</h2>
+    <form action="{{ url_for('handle_tag') }}" method="POST">
+        <label for="name">Name:</label><br>
+        <input type="text" cols="30" name="name" id="name" required value="{{ tag_data['name'] }}">
+        <br><br>
+
+        <input type="hidden" type="text" name="tag_id" id="tag_id" value={{ tag_data['id'] }}>
+        <input type="hidden" type="text" name="question_id" id="question_id" value={{ question_id }}>
+        <button type="submit" class="btn btn-outline-success">{{ "Edit the tag" if tag_data['id'] != '' else "Submit a new tag" }}</button>
+    </form>
+    <br>
+    <a href="/"><strong>Back to the main page</strong></a>
+{% endblock %}

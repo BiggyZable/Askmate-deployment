@@ -1,0 +1,85 @@
+{% extends "layout.html" %}
+{% block title %}List{% endblock %}
+{% block head %}
+{% endblock %}
+{% block navbar %}
+    <li class="nav-item">
+        <a class="nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/tags">List Tags</a>
+    </li>
+    {% if 'username' in session %}
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('users') }}">User List</a>
+    </li>
+    {% endif %}
+{% endblock %}
+{% block content %}
+    <h1>List Questions</h1>
+    <table class="table table-striped">              <!-- ! PLEASE LEAVE THIS ! -->
+        <thead>
+        <tr>
+            {% if click%2 == 0 %}
+                <th>Id</th>
+                <th><a href='/list?order_by=submission_time&order_direction=desc'>Submission Time</a></th>
+                <th><a href='/list?order_by=title&order_direction=desc'>Title</a></th>
+                <th><a href='/list?order_by=view_number&order_direction=desc'>View Number</a></th>
+                <th><a href='/list?order_by=vote_number&order_direction=desc'>Vote Number</a></th>
+                <th><a href='/list?order_by=message&order_direction=desc'>Message</a></th>
+                <th>Image</th>
+                <th>Tags</th>
+                <th>Add tag</th>
+            {% else %}
+                <th>Id</th>
+                <th><a href='/list?order_by=submission_time&order_direction=asc'>Submission Time</a></th>
+                <th><a href='/list?order_by=title&order_direction=asc'>Title</a></th>
+                <th><a href='/list?order_by=view_number&order_direction=asc'>View Number</a></th>
+                <th><a href='/list?order_by=vote_number&order_direction=asc'>Vote Number</a></th>
+                <th><a href='/list?order_by=message&order_direction=asc'>Message</a></th>
+                <th>Image</th>
+                <th>Tags</th>
+                <th>Add tag</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in user_stories %}
+        <tr>
+            <td>{{ row['id'] }}</td>
+            <td>{{ row['submission_time'] }}</td>
+            <td><a href="/question/{{ row['id'] }}">{{ row['title'] }}</a></td>
+            <td>{{ row['view_number'] }}</td>
+            <td>{{ row['vote_number'] }} <a href="/question/{{ row['id'] }}/vote_up">&#x25B2;</a>  <a href="/question/{{ row['id'] }}/vote_down">&#x25BC;</a></td>
+            <td>{{ row['message']|safe }}</td>
+            <td>
+                {% if row['image'] == 'None' or row['image'] == None %}
+                {% else %}
+                    <img src="/{{ row['image'] }}" alt="{{ row['image']|safe }}">
+                {% endif %}
+            </td>
+            <td>
+            {% for tag in tags_dict[row['id']] %}
+                {{ tag['name']|safe }}<a href="{{ url_for('delete_tag', question_id=row['id'], tag_id=tag['tag_id']) }}"> X</a>
+            {% endfor %}
+            </td>
+            <td><a href="{{ url_for('add_tag', question_id=row['id']) }}">New</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% if all_question == False %}
+        <br>
+        <a href="/list">Show all questions</a>
+        <br>
+    {% endif %}
+    <br>
+    {% if 'username' in session %}
+    <form action="/add-question" method="GET">
+        <button class="btn btn-outline-success">Add question</button>
+    </form>
+    {% endif %}
+    {% if all_question != False %}
+        <a href="/">Back to main</a>
+    {% endif %}
+{% endblock %}
