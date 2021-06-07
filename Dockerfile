@@ -1,15 +1,10 @@
-FROM python:3.9.5-slim
+FROM tiangolo/uwsgi-nginx-flask:python3.8
 
 WORKDIR /app
 
-RUN apt-get update \
-    && apt-get -y install libpq-dev gcc
-
 EXPOSE 5000
-ENV FLASK_APP=./app/server.py
+ENV FLASK_APP=./app/app/server.py
 
-ADD . /app
-RUN pip3 install -r ./app/requirements.txt
+RUN pip3 install -r ./app/app/requirements.txt
 
-ENTRYPOINT [ "flask"]
-CMD [ "run", "--host", "0.0.0.0" ]
+COPY ./app /app
