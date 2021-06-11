@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask.templating import render_template_string
 import data_manager
 from html import escape
 
@@ -8,22 +9,23 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 click_counter = 1
 @app.route("/")
 def question_list():
-    user_stories = data_manager.get_latest_5_questions()
-    all_question_id = data_manager.get_all_question_id()
-    tags_dict = {}
-    for question_id_dict in all_question_id:
-        question_id = question_id_dict['id']
-        tags = data_manager.join_question_with_tag(question_id)
-        if tags is not None:
-            tags_dict[question_id] = []
-            for tag in tags:
-                tags_dict[question_id].append({'tag_id': tag.pop('id'), 'name': tag.pop('name')})
-    data_manager.make_directory()
-    if 'username' in session:
-        username = session['username']
-        return render_template('list.html', user_stories=user_stories, tags_dict=tags_dict, click=click_counter,
-                               all_question=False, username=username)
-    return render_template('list.html', user_stories=user_stories, tags_dict=tags_dict, click=click_counter, all_question=False)
+    # user_stories = data_manager.get_latest_5_questions()
+    # all_question_id = data_manager.get_all_question_id()
+    # tags_dict = {}
+    # for question_id_dict in all_question_id:
+    #     question_id = question_id_dict['id']
+    #     tags = data_manager.join_question_with_tag(question_id)
+    #     if tags is not None:
+    #         tags_dict[question_id] = []
+    #         for tag in tags:
+    #             tags_dict[question_id].append({'tag_id': tag.pop('id'), 'name': tag.pop('name')})
+    # data_manager.make_directory()
+    # if 'username' in session:
+    #     username = session['username']
+    #     return render_template('list.html', user_stories=user_stories, tags_dict=tags_dict, click=click_counter,
+    #                            all_question=False, username=username)
+    # return render_template('list.html', user_stories=user_stories, tags_dict=tags_dict, click=click_counter, all_question=False)
+    return render_template('test.html')
 
 
 @app.route('/question/<int:idnum>', methods=['GET','POST'])
