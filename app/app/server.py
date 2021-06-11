@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask.templating import render_template_string
-import data_manager
+#import data_manager
 from html import escape
 
 app = Flask(__name__)
